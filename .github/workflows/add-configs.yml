@@ -1,0 +1,23 @@
+name: Auto Add Configs to MahsaServer
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: add-configs
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  add-configs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run config adder
+        env:
+          MAHSA_API_TOKEN: ${{ secrets.MAHSA_API_TOKEN }}
+        run: bash ./scripts/add_configs.sh
