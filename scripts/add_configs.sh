@@ -28,7 +28,7 @@ while IFS= read -r line; do
   [ -z "$url" ] && continue
   total=$((total + 1))
 
-  payload="$(jq -nc --arg url "$url" --arg ads "$ADS_URL" '{url:$url, ads_url:$ads, pool:"mahsa", use_fragment:false, use_mux:false}')"
+  payload="$(jq -nc --arg url "$url" --arg ads "$ADS_URL" '{url:$url, ads_url:$ads, pool:"mahsa", use_fragment:true, use_mux:false}')"
 
   code=000
   attempt=0
