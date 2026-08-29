@@ -4,7 +4,7 @@ set -uo pipefail
 TOKEN="${MAHSA_API_TOKEN:?MAHSA_API_TOKEN secret is not set}"
 API_URL="${MAHSA_API_URL:-https://www.mahsaserver.com/backend/api/v1/config/}"
 CONFIGS_FILE="${CONFIGS_FILE:-config.txt}"
-DELAY="${DELAY:-30}"
+DELAY="${DELAY:-45}"
 ADS_URL="${ADS_URL:-🔥برای اتصال رایگان و با کیفیت آموزش های پین شده را چک کنید: https://t.me/DeltaKroneckerGithub}"
 USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 MAX_ATTEMPTS=15
