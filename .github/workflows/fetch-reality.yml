@@ -1,0 +1,45 @@
+name: Fetch Reality Config Daily
+
+on:
+  schedule:
+    - cron: "0 4 * * *"   # هر روز ساعت 04:00 به وقت UTC
+  workflow_dispatch:       # اجرای دستی از تب Actions
+
+permissions:
+  contents: write          # برای کامیت کردن config.txt
+
+jobs:
+  fetch-config:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Download reality.txt
+        run: |
+          URL="https://github.com/Delta-Kronecker/V2ray-Config/raw/refs/heads/main/config/reality/reality.txt"
+          curl -fsSL -A "Mozilla/5.0" "$URL" -o reality_tmp.txt
+          echo "Downloaded $(wc -l < reality_tmp.txt) lines"
+          echo "----- first 3 lines -----"
+          head -n 3 reality_tmp.txt
+
+      - name: Replace config.txt
+        run: |
+          mv reality_tmp.txt config.txt
+
+      - name: Commit and push changes
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if [ -n "$(git status --porcelain config.txt)" ]; then
+            git add config.txt
+            git commit -m "chore: update config.txt from reality.txt [skip ci]"
+            git push
+          else
+            echo "No changes to config.txt — nothing to commit"
+          fi
