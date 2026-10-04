@@ -1,45 +1,55 @@
-name: Auto Add Configs to MahsaServer
+name: Run Mahsa Config Script
 
 on:
+  push:
+    branches:
+      - main
+      - master
   schedule:
-    # هر 6 ساعت یک‌بار (ساعت 00:00، 06:00، 12:00، 18:00 UTC)
-    - cron: '0 */6 * * *'
+    - cron: "0 */6 * * *"
   workflow_dispatch:
-
-concurrency:
-  group: add-configs
-  cancel-in-progress: false
 
 permissions:
   contents: write
 
 jobs:
-  add-configs:
+  run-script:
     runs-on: ubuntu-latest
-    timeout-minutes: 350   # کمی بیشتر از 5.5 ساعت برای اطمینان
+    timeout-minutes: 360
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 0
 
-      - name: Run config adder
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+
+      - name: Run script
         env:
           MAHSA_API_TOKEN: ${{ secrets.MAHSA_API_TOKEN }}
-          MAX_RUNTIME: "19800"   # 5 ساعت و 30 دقیقه
-        run: bash ./scripts/add_configs.sh
-        continue-on-error: true
+          MAHSA_API_URL: ${{ secrets.MAHSA_API_URL }}
+          CONFIGS_FILE: config.txt
+          DELAY: "30"
+          MAX_RUNTIME: "21000"
+          ADS_URL: "🔥برای اتصال رایگان و با کیفیت آموزش های پین شده را چک کنید: https://t.me/DeltaKroneckerGithub"
+        run: |
+          chmod +x ./script.sh
+          ./script.sh || true
 
-      - name: Commit and push updated config file
+      - name: Commit and push changes
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -f config.txt ] && ! git diff --quiet -- config.txt; then
+
+          if [ -n "$(git status --porcelain config.txt)" ]; then
             git add config.txt
-            git commit -m "chore: remove added configs [skip ci]"
+            git commit -m "chore: update config.txt [skip ci]"
             git push
-            echo "✅ Committed and pushed updated config.txt"
           else
-            echo "ℹ️ No changes to config.txt"
+            echo "No changes to config.txt"
           fi
