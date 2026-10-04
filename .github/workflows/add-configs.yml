@@ -38,8 +38,9 @@ jobs:
           MAX_RUNTIME: "21000"
           ADS_URL: "🔥برای اتصال رایگان و با کیفیت آموزش های پین شده را چک کنید: https://t.me/DeltaKroneckerGithub"
         run: |
-          chmod +x ./script.sh
-          ./script.sh || true
+          sed -i 's/\r$//' scripts/add_configs.sh
+          chmod +x scripts/add_configs.sh
+          bash scripts/add_configs.sh || true
 
       - name: Commit and push changes
         run: |
