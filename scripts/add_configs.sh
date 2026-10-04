@@ -6,11 +6,11 @@ on:
       - main
       - master
   schedule:
-    - cron: "0 */6 * * *"   # هر ۶ ساعت یکبار
-  workflow_dispatch:         # اجرای دستی از تب Actions
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
 
 permissions:
-  contents: write            # برای کامیت کردن config.txt
+  contents: write
 
 jobs:
   run-script:
@@ -38,8 +38,8 @@ jobs:
           MAX_RUNTIME: "21000"
           ADS_URL: "🔥برای اتصال رایگان و با کیفیت آموزش های پین شده را چک کنید: https://t.me/DeltaKroneckerGithub"
         run: |
-          chmod +x ./script.sh
-          ./script.sh || true
+          chmod +x scripts/add_configs.sh
+          bash scripts/add_configs.sh || true
 
       - name: Commit and push changes
         run: |
