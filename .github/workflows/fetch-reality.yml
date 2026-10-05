@@ -21,7 +21,7 @@ jobs:
 
       - name: Download reality.txt
         run: |
-          URL="https://github.com/Delta-Kronecker/V2ray-Config/raw/refs/heads/main/config/reality/reality.txt"
+          URL="https://github.com/Delta-Kronecker/V2ray-Config/raw/refs/heads/main/config/protocols/vless.txt"
           curl -fsSL -A "Mozilla/5.0" "$URL" -o reality_tmp.txt
           echo "Downloaded $(wc -l < reality_tmp.txt) lines"
           echo "----- first 3 lines -----"
