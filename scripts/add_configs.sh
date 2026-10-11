@@ -4,12 +4,12 @@ set -uo pipefail
 TOKEN="${MAHSA_API_TOKEN:?MAHSA_API_TOKEN secret is not set}"
 API_URL="${MAHSA_API_URL:-https://www.mahsaserver.com/backend/api/v1/config/}"
 CONFIGS_FILE="${CONFIGS_FILE:-config.txt}"
-DELAY="${DELAY:-45}"
+DELAY="${DELAY:-28}"
 ADS_URL="${ADS_URL:-🔥 اتصال رایگان سریع و ساده در یک کلیک با دلتاتور برای دانلود کلیک کنید🔥: https://DeltaTorPage.github.io}"
 USER_AGENT="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 MAX_ATTEMPTS=15
 # حداکثر مدت اجرا: 5 ساعت و 30 دقیقه = 19800 ثانیه
-MAX_RUNTIME="${MAX_RUNTIME:-19800}"
+MAX_RUNTIME="${MAX_RUNTIME:-21000}"
 
 RESP_FILE="$(mktemp)"
 HDR_FILE="$(mktemp)"
@@ -58,7 +58,7 @@ while IFS= read -r line; do
 
   total=$((total + 1))
 
-  payload="$(jq -nc --arg url "$url" --arg ads "$ADS_URL" '{url:$url, ads_url:$ads, pool:"mahsa", use_fragment:true, use_mux:false}')"
+  payload="$(jq -nc --arg url "$url" --arg ads "$ADS_URL" '{url:$url, ads_url:$ads, pool:"mahsa", use_fragment:false, use_mux:false}')"
 
   code=000
   attempt=0
