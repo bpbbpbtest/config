@@ -2,7 +2,7 @@ name: Fetch Reality Config Daily
 
 on:
   schedule:
-    - cron: "0 11 * * *"   # هر روز ساعت 04:00 به وقت UTC
+    - cron: "0 5 * * *"   # هر روز ساعت 04:00 به وقت UTC
   workflow_dispatch:       # اجرای دستی از تب Actions
 
 permissions:
